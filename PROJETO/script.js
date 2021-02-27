@@ -4,7 +4,7 @@ const expenseDisplay = document.querySelector('#money-minus')
 const balanceDisplay = document.querySelector('#balance')
 const form = document.querySelector('#form')
 const inputTransactionName = document.querySelector('#text')
-const inputTransactionAmoun = document.querySelector('#amount')
+const inputTransactionAmount = document.querySelector('#amount')
 
 const localStorageTransactions = JSON.parse(localStorage
     .getItem('transactions'))
@@ -32,7 +32,7 @@ const addTransactionIntoDOM = transaction => {
         x
         </button>
     `
-    transactions.append(li)
+    transactionsUl.append(li)
 }
 
 const updateBalanceValues = () => {
@@ -62,33 +62,39 @@ const init = () => {
 }
 init()
 
-const updateLocalStorage = () => {
-    localStorage.setItem('transactions', JSON.stringify(transactions))
-}
 
-const generateID = () => Math.round(Math.random() * 1000)
 
-form.addEventListener('submit', event => {
+
+
+const generateID = () => Math.round(Math.random() * 1000) 
+
+form.addEventListener('submit', event = > {
     event.preventDefault()
+})
+
+const handleFormSubmit = event => {
+        event.preventDefault()
 
     const transactionName = inputTransactionName.value.trim()
-    const transactionsAmount = inputTransactionAmoun.value.trim()
+    const transactionAmount = inputTransactionAmount.value.trim() 
 
-    if (transactionName === '' || transactionsAmount === '') {
-        alert('Por favor, preencha tanto o nome quanto o valor da transação')
+    if(transactionName === '' || transactionAmount === '') {
+        alert('Por favor, preecha tanto o nome quanto o valor da transação')
         return
     }
 
-    const transaction = { 
-        id: generateID(), 
-        name: transactionName, 
+    const transaction = {
+        id: generateID(),
+        nome: transactionName,
         amount: Number(transactionsAmount)
     }
+
     transactions.push(transaction)
     init()
     updateLocalStorage()
 
     inputTransactionName.value = ''
-    inputTransactionAmoun.value = ''
-})
+    inputTransactionAmount.value = ''
+}
+form.addEventListener('submit', handleFormSubmit)
 
