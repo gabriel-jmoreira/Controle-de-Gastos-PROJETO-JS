@@ -63,9 +63,6 @@ const init = () => {
 init()
 
 
-
-
-
 const generateID = () => Math.round(Math.random() * 1000) 
 
 form.addEventListener('submit', event = > {
