@@ -57,13 +57,20 @@ const init = () => {
 
 init()
 
+const generateID = () => Math.round(Math.random() * 1000)
+
 form.addEventListener('submit', event => {
     event.preventDefault()
 
-    if(inputTransactionName.value.trim() === '' || inputTransactionAmount.value.trim() === '') {
+    const transactionName = inputTransactionName.value.trim()
+    const transactionAmaunt = inputTransactionAmount.value.trim()
+
+    if(transactionName === '' || transactionAmaunt === '') {
         alert('Por favor, preencha tanto o nome quanto o valor da transação')
-    return
+        return
     }
-    
+
+    const transaction = { id: generateID(), name: transactionName, amount: transactionAmaunt }
+    console.log(transaction)
 
 })

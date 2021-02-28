@@ -6,12 +6,17 @@ const form = document.querySelector('#form')
 const inputTransactionName = document.querySelector('#text')
 const inputTransactionAmount = document.querySelector('#amount')
 
-const dummyTransactions = [
+let dummyTransactions = [
     { id: 1, name: 'Bolo de brigadeiro', amount: -20},
     { id: 2, name: 'Salario', amount: 300},
     { id: 3, name: 'Torta de frango', amount: -10},
     { id: 4, name: 'Violão', amount: 150}
 ]
+
+const removeTransaction = ID => {
+    dummyTransactions = dummyTransactions.filter(transaction => transaction.id !== ID)
+    init()
+}
 
 const addTransactionIntoDOM = transaction => {
     const operator = transaction.amount < 0 ? '-': '+'
@@ -34,7 +39,7 @@ const updateBalanceValues = () => {
     const transactionsAmounts = dummyTransactions
         .map(transaction => transaction.amount)
     const total = transactionsAmounts
-        .reduce((accumulator, transactions) => accumulator + transactions, 0)
+        .reduce((accumulator, transaction) => accumulator + transaction, 0)
         .toFixed(2)
     const income = transactionsAmounts
         .filter(value => value > 0)
@@ -51,19 +56,36 @@ const updateBalanceValues = () => {
 }
 
 const init = () => {
+    transactionsUl.innerHTML = ''
     dummyTransactions.forEach(addTransactionIntoDOM)
     updateBalanceValues()
 }
 
 init()
 
+const generateID = () => Math.round(Math.random() * 1000)
+
 form.addEventListener('submit', event => {
     event.preventDefault()
 
-    if(inputTransactionName.value.trim() === '' || inputTransactionAmount.value.trim() === '') {
+    const transactionName = inputTransactionName.value.trim()
+    const transactionAmount = inputTransactionAmount.value.trim()
+
+    if(transactionName === '' || transactionAmount === '') {
         alert('Por favor, preencha tanto o nome quanto o valor da transação')
-    return
+        return
+    }
+
+    const transaction = { 
+        id: generateID(), 
+        name: transactionName, 
+        amount: Number(transactionAmount) 
     }
     
+    dummyTransactions.push(transaction)
+    init()
+
+    inputTransactionName.value = ''
+    inputTransactionAmount.value = ''
 
 })
